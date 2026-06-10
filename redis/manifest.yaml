@@ -21,6 +21,7 @@ spec:
       containers: 
       - name: redis 
         image: devopsprocloudaws/redis
+        imagePullPolicy: Always
         ports:
         - containerPort: 6379 
 --- 
