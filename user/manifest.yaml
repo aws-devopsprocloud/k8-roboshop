@@ -1,0 +1,56 @@
+apiVersion: v1 
+kind: ConfigMap 
+metadata:
+  name: user 
+  namespace: roboshop 
+data: 
+  MONGO: "true"
+  MONGO_URL: "mongodb://mongodb:27017/user"
+  REDIS_URL: "redis://redis:6379"
+  
+--- 
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: user 
+  namespace: roboshop 
+spec: 
+  replicas: 1 
+  selector:
+    matchLabels:  
+      app: user 
+      project: roboshop 
+      tier: app 
+  template:
+    metadata:
+      name: user 
+      labels:
+        app: user 
+        project: roboshop 
+        tier: app
+    spec: 
+      containers: 
+      - name: user 
+        image: devopsprocloudaws/user:1.0.0
+        ports: 
+        - containerPort: 8080 
+        envFrom: 
+        - configMapRef: # We need to put - because the devops-config has multiple key-value pairs
+            name: user 
+
+--- 
+apiVersion: v1 
+kind: Service
+metadata:
+  name: user
+  namespace: roboshop 
+spec: 
+  selector: # selecting the Pod by using the same Pod labels 
+    app: user 
+    project: roboshop 
+    tier: app
+  ports:
+  - protocol: TCP
+    port: 8080 # service port 
+    targetPort: 8080 # container port
+
