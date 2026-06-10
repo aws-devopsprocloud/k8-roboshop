@@ -3,10 +3,6 @@ kind: Deployment
 metadata: 
   name: mongodb 
   namespace: roboshop 
-  labels:
-    app: mongodb 
-    project: roboshop 
-    tier: db
 spec: 
   replicas: 1 
   selector:
@@ -21,12 +17,12 @@ spec:
         app: mongodb 
         project: roboshop 
         tier: db
-  spec:   
-    containers: 
-    - name: mongodb 
-      image: devopsprocloudaws/mongodb:1.0.0 
-      ports:
-      - containerPort: 27017 
+    spec:   
+      containers: 
+      - name: mongodb 
+        image: devopsprocloudaws/mongodb:1.0.0 
+        ports:
+        - containerPort: 27017 
 --- 
 
 apiVersion: v1 
