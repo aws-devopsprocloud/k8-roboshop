@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: frontend 
+  namespace: roboshop 
+spec: 
+  replicas: 1 
+  selector:
+    matchLabels:  
+      app: frontend 
+      project: roboshop 
+      tier: frontend 
+  template:
+    metadata:
+      name: frontend 
+      labels:
+        app: frontend 
+        project: roboshop 
+        tier: frontend
+    spec: 
+      containers: 
+      - name: frontend 
+        image: devopsprocloudaws/frontend:1.0.0
+        ports: 
+        - containerPort: 80
+        # envFrom: 
+        # - configMapRef: # We need to put - because the devops-config has multiple key-value pairs
+        #     name: catalogue 
+
+--- 
+apiVersion: v1 
+kind: Service
+metadata:
+  name: frontend
+  namespace: roboshop 
+spec: 
+  selector: # selecting the Pod by using the same Pod labels 
+    app: frontend 
+    project: roboshop 
+    tier: frontend
+  ports:
+  - protocol: TCP
+    port: 80 # service port 
+    targetPort: 80 # container port
