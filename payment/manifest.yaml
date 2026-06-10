@@ -9,9 +9,15 @@ data:
   USER_HOST: "user"
   USER_PORT: "8080"
   AMQP_HOST: "rabbitmq"
-  AMQP_USER: "roboshop"
-  AMQP_PASS: "roboshop123"
-  
+---
+apiVersion: v1 
+kind: Secret 
+metadata: 
+  name: rabbitmq 
+type: Opaque
+data:
+  AMQP_USER: cm9ib3Nob3A=
+  AMQP_PASS: cm9ib3Nob3AxMjM=
 --- 
 apiVersion: apps/v1
 kind: Deployment 
@@ -40,6 +46,8 @@ spec:
         - containerPort: 8080 
         envFrom: 
         - configMapRef: # We need to put - because the devops-config has multiple key-value pairs
+            name: payment 
+        - secretRef:
             name: payment 
 
 --- 
